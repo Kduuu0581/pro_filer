@@ -1,37 +1,42 @@
 from pro_filer.actions.main_actions import show_details  # NOQA
-
-mock_context = {
-    "base_path": "pro_filer/actions/alpha_actions.py",
-}
-
-mock_context_extension = {
-    "base_path": "pro_filer/actions/alpha_actions",
-}
+from datetime import date
 
 mock_context_file = {
     "base_path": "/home/trybe/????",
 }
 
 
-def test_show_details(capsys):
+def test_show_details(capsys, tmp_path):
+    file = tmp_path / "duranda1.py"
+    file.touch()
+    mock_context = {
+        "base_path": str(file),
+    }
     show_details(mock_context)
     captured = capsys.readouterr()
+    time = date.today()
     assert (
         captured.out
-        == "File name: alpha_actions.py\n\
-File size in bytes: 2346\nFile type: file\nFile extension: [no extension]\n\
-Last modified: 2021-08-31 15:00:00\n"
+        == f"File name: duranda1.py\n\
+File size in bytes: 0\nFile type: file\nFile extension: .py\n\
+Last modified date: {time}\n"
     )
 
 
-def test_show_details_extension(capsys):
+def test_show_details_extension(capsys, tmp_path):
+    file = tmp_path / "duranda1"
+    file.touch()
+    mock_context_extension = {
+        "base_path": str(file),
+    }
     show_details(mock_context_extension)
     captured = capsys.readouterr()
+    time = date.today()
     assert (
         captured.out
-        == "File name: alpha_actions\n\
-File size in bytes: 2346\nFile type: file\nFile extension: [no extension]\n\
-Last modified: 2021-08-31 15:00:00\n"
+        == f"File name: duranda1\n\
+File size in bytes: 0\nFile type: file\nFile extension: [no extension]\n\
+Last modified date: {time}\n"
     )
 
 
